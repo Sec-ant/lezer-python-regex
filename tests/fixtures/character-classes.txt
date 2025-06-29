@@ -1,0 +1,14 @@
+// Character classes
+[abc]
+[^abc]
+[a-z]
+[A-Z]
+[0-9]
+[a-zA-Z0-9]
+[a-z_]
+
+// Character classes with escapes
+[\d\w]
+[^\s]
+[\x41-\x5A]
+[\u0041-\u005A]

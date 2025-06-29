@@ -1,0 +1,7 @@
+// Simple alternation
+cat|dog
+a|b|c
+
+// Grouped alternation
+(?:red|green|blue)
+(?:hello|hi|hey)

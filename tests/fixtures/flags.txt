@@ -1,0 +1,5 @@
+// Flags
+(?i)
+(?i:case_insensitive)
+(?ims)
+(?i-s:mixed_flags)

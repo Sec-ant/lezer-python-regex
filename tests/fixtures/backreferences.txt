@@ -1,0 +1,9 @@
+// Numeric backreferences
+\1
+\2
+\9
+
+// Named backreferences
+(?P=name)
+\g<1>
+\g<name>

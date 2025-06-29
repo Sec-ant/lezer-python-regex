@@ -1,0 +1,12 @@
+// Lookahead assertions
+(?=positive_lookahead)
+(?!negative_lookahead)
+
+// Lookbehind assertions
+(?<=positive_lookbehind)
+(?<!negative_lookbehind)
+
+// Complex lookarounds
+(?=.*[a-z])
+(?=.*[A-Z])
+(?=.*\d)

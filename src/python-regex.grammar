@@ -1,0 +1,259 @@
+@top Pattern {
+  Alternation
+}
+
+Alternation {
+  Term ("|" Term)*
+}
+
+Term {
+  Atom*
+}
+
+Atom {
+  SimpleAtom Quantifier? | GroupConstruct Quantifier?
+}
+
+SimpleAtom {
+  AnyCharacter |
+  StartAssertion |
+  EndAssertion |
+  CharacterClass |
+  EscapeSequence |
+  PatternCharacter
+}
+
+GroupConstruct {
+  AnonymousCapturingGroup |
+  NamedCapturingGroup |
+  NonCapturingGroup |
+  AtomicGroup |
+  InlineFlagsGroup |
+  Comment |
+  LookaroundAssertion |
+  ConditionalExpression
+}
+
+// Lookaround assertions
+LookaroundAssertion {
+  PositiveLookahead |
+  NegativeLookahead |
+  PositiveLookbehind |
+  NegativeLookbehind
+}
+
+PositiveLookahead {
+  "(?=" Alternation ")"
+}
+
+NegativeLookahead {
+  "(?!" Alternation ")"
+}
+
+PositiveLookbehind {
+  "(?<=" Alternation ")"
+}
+
+NegativeLookbehind {
+  "(?<!" Alternation ")"
+}
+
+// Group constructs
+AnonymousCapturingGroup {
+  "(" Alternation ")"
+}
+
+NamedCapturingGroup {
+  "(?P<" GroupName ">" Alternation ")"
+}
+
+NonCapturingGroup {
+  "(?:" Alternation ")"
+}
+
+AtomicGroup {
+  "(?>" Alternation ")"
+}
+
+InlineFlagsGroup {
+  "(?" FlagsExpression ")" |
+  "(?" FlagsExpression ":" Alternation ")"
+}
+
+FlagsExpression {
+  Flags ("-" Flags)? |
+  "-" Flags
+}
+
+Comment {
+  "(?#" CommentContent ")"
+}
+
+// Conditional expressions
+ConditionalExpression {
+  "(?(" ConditionalTest ")" ConditionalContent ")"
+}
+
+ConditionalContent {
+  Term ("|" Term)?
+}
+
+ConditionalTest {
+  GroupName | DecimalDigits
+}
+
+// Character classes
+CharacterClass {
+  "[" CharacterClassNegation? CharacterClassContent "]"
+}
+
+CharacterClassContent {
+  ClassItem*
+}
+
+ClassItem {
+  ClassCharacter |
+  ClassEscape
+}
+
+ClassEscape {
+  ClassCharacterEscape |
+  ClassControlEscape |
+  ClassBackslashEscape |
+  ClassHexEscape |
+  ClassUnicodeEscape |
+  ClassOctalEscape |
+  ClassIdentityEscape
+}
+
+// Quantifiers with Python 3.11+ possessive support
+Quantifier {
+  ZeroOrMore |
+  OneOrMore |
+  Optional |
+  CountQuantifier
+}
+
+ZeroOrMore {
+  "*" LazyModifier? | "*+"
+}
+
+OneOrMore {
+  "+" LazyModifier? | "++"
+}
+
+Optional {
+  "?" LazyModifier? | "?+"
+}
+
+CountQuantifier {
+  "{" QuantifierRange "}" (LazyModifier | "+")?
+}
+
+QuantifierRange {
+  DecimalDigits |
+  DecimalDigits "," |
+  DecimalDigits "," DecimalDigits |
+  "," DecimalDigits
+}
+
+// Escape sequences
+EscapeSequence {
+  BoundaryAssertion |
+  NonBoundaryAssertion |
+  BackreferenceNumber |
+  BackreferenceExtended |
+  BackreferenceK |
+  NamedBackreference |
+  CharacterClassEscape |
+  ControlEscape |
+  ControlEscapeNull |
+  BackslashEscape |
+  HexEscape |
+  UnicodeEscape |
+  IdentityEscape
+}
+
+BackreferenceExtended {
+  "\\g<" (GroupName | DecimalDigits) ">"
+}
+
+NamedBackreference {
+  "(?P=" GroupName ")"
+}
+
+@tokens {
+  // Basic pattern elements
+  AnyCharacter { "." }
+  StartAssertion { "^" }
+  EndAssertion { "$" }
+  
+  // Character class tokens - more specific negation handling
+  CharacterClassNegation[group=negation] { "^" }
+  ClassCharacter { ![\\\[\]^] }
+  ClassCharacterEscape { "\\" $[dDsSwW] }
+  ClassControlEscape { "\\" $[abfnrtv0] }
+  ClassBackslashEscape { "\\\\" }
+  ClassHexEscape { "\\x" $[0-9a-fA-F] $[0-9a-fA-F] }
+  ClassUnicodeEscape { 
+    "\\u" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] |
+    "\\U" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F]
+  }
+  ClassOctalEscape { "\\" $[0-7] $[0-7] $[0-7] }
+  ClassIdentityEscape { "\\" ("[" | "]" | "^" | "-") }
+  
+  // Modifiers
+  LazyModifier { "?" }
+  
+  // Flags (Python specific)
+  Flags { $[aiLmsux]+ }
+  
+  // Identifiers and numbers - more conservative approach to avoid conflicts
+  GroupName { $[a-zA-Z_] $[a-zA-Z0-9_]* }
+  DecimalDigits { $[0-9]+ }
+  
+  // Comment content
+  CommentContent { (![)] | "\\)")+ }
+  
+  // Escape sequences (most specific first)
+  // Escape sequences - handle conflicts more carefully
+  BoundaryAssertion { "\\b" }
+  NonBoundaryAssertion { "\\B" }
+  BackreferenceNumber { "\\" $[1-9] $[0-9]* }
+  BackreferenceK { "\\k<" $[a-zA-Z_] $[a-zA-Z0-9_]* ">" }
+  CharacterClassEscape { "\\" $[dDsSwWAZ] }
+  ControlEscape { "\\" $[afnrtv] }
+  ControlEscapeNull { "\\0" }
+  BackslashEscape { "\\\\" }
+  HexEscape { "\\x" $[0-9a-fA-F] $[0-9a-fA-F] }
+  UnicodeEscape { 
+    "\\u" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] |
+    "\\U" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F]
+  }
+  IdentityEscape { 
+    "\\" ("$" | "^" | "*" | "?" | "{" | "}" | "(" | ")" | "|" | "[" | "]" | "." | "+" | "-" | "#")
+  }
+  
+  // Pattern characters - everything else
+  PatternCharacter { ![\\^$.*+?{}()|[\]#] }
+}
+
+@precedence {
+  BackreferenceK,
+  BackreferenceNumber,
+  CharacterClassEscape,
+  ControlEscape,
+  ControlEscapeNull,
+  BackslashEscape,
+  HexEscape,
+  UnicodeEscape,
+  BoundaryAssertion,
+  NonBoundaryAssertion,
+  GroupName,
+  DecimalDigits,
+  IdentityEscape
+}
+
+@external propSource pythonRegexHighlighting from "./highlight"
+
+@detectDelim

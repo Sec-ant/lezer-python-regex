@@ -1,0 +1,21 @@
+// Basic quantifiers
+a*
+a+
+a?
+
+// Counted quantifiers
+a{3}
+a{3,}
+a{3,5}
+
+// Lazy quantifiers
+a*?
+a+?
+a??
+a{3,5}?
+
+// Possessive quantifiers (Python 3.11+)
+a*+
+a++
+a?+
+a{3,5}+

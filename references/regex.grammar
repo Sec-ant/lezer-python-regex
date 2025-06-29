@@ -1,0 +1,167 @@
+@top Pattern {
+  Alternation |
+  Term
+}
+
+Alternation {
+  Term? ("|" Term?)+
+}
+
+Term {
+  ((StartAssertion | EndAssertion | BoundaryAssertion | NonBoundaryAssertion | LookaroundAssertion | PatternCharacter | CharacterClass | PosixCharacterClass | AnyCharacter | DecimalEscape | CharacterClassEscape | characterEscape | BackreferenceEscape | NamedGroupBackreference | AnonymousCapturingGroup | NamedCapturingGroup | NonCapturingGroup | InlineFlagsGroup) (ZeroOrMore | OneOrMore | Optional | CountQuantifier)?)+
+}
+
+LookaroundAssertion {
+  lookaheadAssertion |
+  lookbehindAssertion
+}
+
+lookaheadAssertion {
+  "(?" ("=" | "!") Pattern ")"
+}
+
+lookbehindAssertion {
+  "(?<" ("=" | "!") Pattern ")"
+}
+
+CharacterClass {
+  "[" "^"? ClassCharacter { "-" }? classAtom* ClassCharacter { "-" }? "]"
+}
+
+PosixCharacterClass {
+  "[:" PosixClassName ":]"
+}
+
+ClassRange /* precedence: right 0 */ {
+  (ClassCharacter | CharacterClassEscape | ControlEscape | ClassCharacter { "-" }) "-" (ClassCharacter | CharacterClassEscape | ControlEscape | ClassCharacter { "-" })
+}
+
+classAtom {
+  ClassCharacter |
+  IdentityEscape { "\\-" } |
+  CharacterClassEscape |
+  characterEscape |
+  PosixCharacterClass |
+  ClassRange
+}
+
+AnonymousCapturingGroup {
+  "(" Pattern ")"
+}
+
+NamedCapturingGroup {
+  ("(?<" | "(?P<") GroupName ">" Pattern ")"
+}
+
+NonCapturingGroup {
+  "(?:" Pattern ")"
+}
+
+InlineFlagsGroup {
+  "(?" (Flags | Flags "-" Flags | "-" Flags) (":" Pattern)? ")"
+}
+
+ZeroOrMore {
+  "*" Lazy { "?" }?
+}
+
+OneOrMore {
+  "+" Lazy { "?" }?
+}
+
+Optional {
+  "?" Lazy { "?" }?
+}
+
+CountQuantifier {
+  "{" (DecimalDigits ("," DecimalDigits?)? | "," DecimalDigits) "}" Lazy { "?" }?
+}
+
+BackreferenceEscape {
+  "\\k" "<" GroupName ">"
+}
+
+NamedGroupBackreference {
+  "(?P=" GroupName ")"
+}
+
+CharacterClassEscape {
+  token_2 |
+  token_3 "{" UnicodePropertyValueExpression "}" |
+  UnicodeCharacterEscape
+}
+
+UnicodePropertyValueExpression {
+  (UnicodePropertyName { UnicodeProperty } "=")? UnicodePropertyValue { UnicodeProperty }
+}
+
+characterEscape {
+  ControlEscape |
+  ControlLetterEscape |
+  IdentityEscape
+}
+
+@skip { token_1 }
+
+@tokens {
+  token_1 {
+    "\\r"? "\\n"
+  }
+  AnyCharacter {
+    "."
+  }
+  StartAssertion {
+    "^"
+  }
+  EndAssertion {
+    "$"
+  }
+  BoundaryAssertion {
+    "\\b"
+  }
+  NonBoundaryAssertion {
+    "\\B"
+  }
+  PatternCharacter {
+    ![\^\$\\\.\*\+\?\(\)\[\]\|\r?\n]
+  }
+  PosixClassName {
+    $[a-zA-Z]+
+  }
+  ClassCharacter {
+    ![\\\]\-]
+  }
+  Flags {
+    $[a-zA-Z]+
+  }
+  DecimalEscape {
+    "\\\\" $[1-9] $[0-9]*
+  }
+  token_2 {
+    "\\\\" $[dDsSwW]
+  }
+  token_3 {
+    "\\\\" $[pP]
+  }
+  UnicodeCharacterEscape {
+    "\\\\u" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F]  | "\\\\u\\{" $[0-9a-fA-F] $[0-9a-fA-F]? $[0-9a-fA-F]? $[0-9a-fA-F]? $[0-9a-fA-F]? $[0-9a-fA-F]?  "\\}"
+  }
+  UnicodeProperty {
+    $[a-zA-Z_0-9]+
+  }
+  ControlEscape {
+    "\\\\" $[bfnrtv0] | "\\\\x" $[0-9a-fA-F] $[0-9a-fA-F] 
+  }
+  ControlLetterEscape {
+    "\\\\c" $[a-zA-Z]
+  }
+  IdentityEscape {
+    "\\" ![kdDsSpPwWbfnrtv0-9]
+  }
+  GroupName {
+    $[A-Za-z_] $[A-Za-z0-9_]*
+  }
+  DecimalDigits {
+    $[0-9]+
+  }
+}

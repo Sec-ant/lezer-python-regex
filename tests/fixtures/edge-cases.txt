@@ -1,0 +1,12 @@
+// Character class range issues
+[a-z-A-Z]
+
+// Malformed character classes
+[]]
+[^]]
+
+// Invalid group names
+(?P<123invalid>test)
+
+// Invalid backreferences
+\k<invalid>

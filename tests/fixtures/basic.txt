@@ -1,0 +1,14 @@
+// Basic literal patterns and simple constructs
+hello
+world
+test123
+
+// Anchors
+^start
+end$
+^beginning$
+
+// Wildcards
+.
+.any.
+a.b

@@ -1,0 +1,17 @@
+// Capturing groups
+(abc)
+(hello world)
+
+// Non-capturing groups
+(?:abc)
+(?:red|green|blue)
+
+// Named groups
+(?P<name>abc)
+(?P<word>\w+)
+
+// Comments
+(?#this is a comment)
+
+// Atomic groups (Python 3.11+)
+(?>atomic)
