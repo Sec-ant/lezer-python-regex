@@ -31,7 +31,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Test
-        run: pnpm -s test:ci
+        run: pnpm -s test
 
       - name: Get Next Package Version
         id: package-version
