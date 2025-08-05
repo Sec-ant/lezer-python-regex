@@ -109,8 +109,6 @@ pnpm build
 pnpm test
 ```
 
-Test categories: basic patterns, character classes, quantifiers, groups, lookarounds, backreferences, conditionals, alternation, comments, complex patterns, edge cases.
-
 Commands:
 
 - `pnpm test:run` - Run all tests
