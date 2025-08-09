@@ -1,0 +1,3 @@
+# Named Unicode escape
+\N{EM DASH}
+\N{LATIN SMALL LETTER A}

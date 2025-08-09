@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  unplugin-lezer:
+    hash: 8ebcaf7b45c8c252a3864582d3b25f48deaa3e208633d83f693f5e4c994549fc
+    path: patches/unplugin-lezer.patch
+
 importers:
 
   .:
@@ -64,7 +69,7 @@ importers:
         version: 5.9.2
       unplugin-lezer:
         specifier: ^1.0.1
-        version: 1.0.1(esbuild@0.25.5)(rollup@4.44.1)(vite@7.0.6(@types/node@24.2.0)(tsx@4.20.3)(yaml@2.8.0))
+        version: 1.0.1(patch_hash=8ebcaf7b45c8c252a3864582d3b25f48deaa3e208633d83f693f5e4c994549fc)(esbuild@0.25.5)(rollup@4.44.1)(vite@7.0.6(@types/node@24.2.0)(tsx@4.20.3)(yaml@2.8.0))
       vite:
         specifier: ^7.0.6
         version: 7.0.6(@types/node@24.2.0)(tsx@4.20.3)(yaml@2.8.0)
@@ -2609,7 +2614,7 @@ snapshots:
 
   universalify@0.1.2: {}
 
-  unplugin-lezer@1.0.1(esbuild@0.25.5)(rollup@4.44.1)(vite@7.0.6(@types/node@24.2.0)(tsx@4.20.3)(yaml@2.8.0)):
+  unplugin-lezer@1.0.1(patch_hash=8ebcaf7b45c8c252a3864582d3b25f48deaa3e208633d83f693f5e4c994549fc)(esbuild@0.25.5)(rollup@4.44.1)(vite@7.0.6(@types/node@24.2.0)(tsx@4.20.3)(yaml@2.8.0)):
     dependencies:
       '@lezer/generator': 1.8.0
       unplugin: 1.16.1

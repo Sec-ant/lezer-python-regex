@@ -1,12 +1,12 @@
-// Character class range issues
+# Character class range issues
 [a-z-A-Z]
 
-// Malformed character classes
+# Malformed character classes
 []]
 [^]]
 
-// Invalid group names
+# Invalid group names
 (?P<123invalid>test)
 
-// Invalid backreferences
-\k<invalid>
+# Invalid backreferences
+# (Python does not support \k<...> or \g<...> in patterns)

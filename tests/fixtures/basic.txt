@@ -1,14 +1,14 @@
-// Basic literal patterns and simple constructs
+# Basic literal patterns and simple constructs
 hello
 world
 test123
 
-// Anchors
+# Anchors
 ^start
 end$
 ^beginning$
 
-// Wildcards
+# Wildcards
 .
 .any.
 a.b

@@ -1,21 +1,21 @@
-// Email validation
+# Email validation
 (?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$
 
-// Number parsing
+# Number parsing
 ^(?:\+|-)?\d+(?:\.\d+)?(?:[eE](?:\+|-)?\d+)?$
 
-// Date parsing
+# Date parsing
 ^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})$
 
-// Quote matching
+# Quote matching
 (?P<quote>['"]).*?(?P=quote)
 
-// Word boundaries
+# Word boundaries
 \b\w+\b
 
-// Whitespace between numbers
+# Whitespace between numbers
 (?<=\d)\s+(?=\d)
 
-// Nested constructs
+# Nested constructs
 (?:(?P<name>\w+)\s+(?P=name))
 (?i:(?P<word>\w+).*\1)

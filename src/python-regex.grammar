@@ -161,21 +161,18 @@ QuantifierRange {
 EscapeSequence {
   BoundaryAssertion |
   NonBoundaryAssertion |
+  StartOfStringAnchor |
+  EndOfStringAnchor |
   BackreferenceNumber |
-  BackreferenceExtended |
-  BackreferenceK |
   NamedBackreference |
+  OctalEscape |
   CharacterClassEscape |
   ControlEscape |
-  ControlEscapeNull |
   BackslashEscape |
   HexEscape |
   UnicodeEscape |
+  NamedUnicodeEscape |
   IdentityEscape
-}
-
-BackreferenceExtended {
-  "\\g<" (GroupName | DecimalDigits) ">"
 }
 
 NamedBackreference {
@@ -217,19 +214,22 @@ NamedBackreference {
   
   // Escape sequences (most specific first)
   // Escape sequences - handle conflicts more carefully
+  StartOfStringAnchor { "\\A" }
+  EndOfStringAnchor { "\\Z" }
   BoundaryAssertion { "\\b" }
   NonBoundaryAssertion { "\\B" }
-  BackreferenceNumber { "\\" $[1-9] $[0-9]* }
-  BackreferenceK { "\\k<" $[a-zA-Z_] $[a-zA-Z0-9_]* ">" }
-  CharacterClassEscape { "\\" $[dDsSwWAZ] }
+  // Octal must come before backreference to ensure 3-digit octals are recognized
+  OctalEscape { "\\" ( "0" | "0" $[0-7] | "0" $[0-7] $[0-7] | $[1-7] $[0-7] $[0-7] ) }
+  BackreferenceNumber { "\\" $[1-9] $[0-9]? }
+  CharacterClassEscape { "\\" $[dDsSwW] }
   ControlEscape { "\\" $[afnrtv] }
-  ControlEscapeNull { "\\0" }
   BackslashEscape { "\\\\" }
   HexEscape { "\\x" $[0-9a-fA-F] $[0-9a-fA-F] }
   UnicodeEscape { 
     "\\u" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] |
     "\\U" $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F] $[0-9a-fA-F]
   }
+  NamedUnicodeEscape { "\\N{" ![}]+ "}" }
   IdentityEscape { 
     "\\" ("$" | "^" | "*" | "?" | "{" | "}" | "(" | ")" | "|" | "[" | "]" | "." | "+" | "-" | "#")
   }
@@ -239,14 +239,15 @@ NamedBackreference {
 }
 
 @precedence {
-  BackreferenceK,
+  StartOfStringAnchor,
+  EndOfStringAnchor,
   BackreferenceNumber,
   CharacterClassEscape,
   ControlEscape,
-  ControlEscapeNull,
   BackslashEscape,
   HexEscape,
   UnicodeEscape,
+  NamedUnicodeEscape,
   BoundaryAssertion,
   NonBoundaryAssertion,
   GroupName,

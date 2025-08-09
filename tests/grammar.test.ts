@@ -2,7 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parser } from "../src/python-regex.grammar";
+import { parser } from "../src/index";
 
 // Utility function to load patterns from fixture files
 function loadPatterns(filename: string): string[] {
@@ -10,7 +10,7 @@ function loadPatterns(filename: string): string[] {
   return content
     .split("\n")
     .map((line) => line.trim())
-    .filter((line) => line && !line.startsWith("//"));
+    .filter((line) => line && !line.startsWith("#"));
 }
 
 // Utility function to test patterns for errors
@@ -101,6 +101,27 @@ describe("Python Regex Grammar", () => {
   describe("Flags", () => {
     it("should parse flag expressions", () => {
       const patterns = loadPatterns("flags.txt");
+      testPatternsForErrors(patterns);
+    });
+  });
+
+  describe("Anchors", () => {
+    it("should parse anchor escapes \\A and \\Z", () => {
+      const patterns = loadPatterns("anchors.txt");
+      testPatternsForErrors(patterns);
+    });
+  });
+
+  describe("Unicode names", () => {
+    it("should parse named unicode escapes \\N{...}", () => {
+      const patterns = loadPatterns("unicode-names.txt");
+      testPatternsForErrors(patterns);
+    });
+  });
+
+  describe("Octal escapes", () => {
+    it("should parse octal escapes and numeric backrefs disambiguation", () => {
+      const patterns = loadPatterns("octal.txt");
       testPatternsForErrors(patterns);
     });
   });

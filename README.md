@@ -16,7 +16,7 @@ npm i lezer-python-regex
 - Lookarounds, backreferences, conditionals, alternation
 - Inline flags, embedded comments, escape sequences
 - Named groups `(?P<name>)`, atomic groups `(?>)`
-- Full Python regex syntax compliance
+- Broad coverage of Python regex syntax (groups, lookarounds, conditionals, inline flags, character classes, octal/hex/unicode escapes, anchors including \A and \Z, possessive quantifiers and atomic groups from Python 3.11+)
 
 ## Usage
 
@@ -125,3 +125,10 @@ Commands:
 ## License
 
 MIT
+
+## Limitations
+
+- Inline flags without a scope (e.g. `(?ims)`) are parsed but their required position at the start of the pattern (per Python 3.11+) isn’t enforced by the grammar.
+- Verbose mode semantics (re.X / `(?x)`)—whitespace skipping and `#` comments outside character classes—are not modeled; only `(?#...)` embedded comments are recognized.
+- Lookbehind fixed-length requirement isn’t validated by the grammar.
+- Group existence for numbered/named backreferences isn’t validated by the grammar.
