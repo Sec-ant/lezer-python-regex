@@ -1,17 +1,17 @@
-// Capturing groups
+# Capturing groups
 (abc)
 (hello world)
 
-// Non-capturing groups
+# Non-capturing groups
 (?:abc)
 (?:red|green|blue)
 
-// Named groups
+# Named groups
 (?P<name>abc)
 (?P<word>\w+)
 
-// Comments
+# Comments
 (?#this is a comment)
 
-// Atomic groups (Python 3.11+)
+# Atomic groups (Python 3.11+)
 (?>atomic)

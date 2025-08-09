@@ -1,0 +1,6 @@
+# Octal escapes outside classes
+\0
+\07
+\101
+# Ambiguous: three digits is octal, two digits may be backref depending on group existence
+\11

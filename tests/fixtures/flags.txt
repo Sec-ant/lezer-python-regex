@@ -1,4 +1,4 @@
-// Flags
+# Flags
 (?i)
 (?i:case_insensitive)
 (?ims)
