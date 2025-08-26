@@ -2,7 +2,7 @@
   "name": "lezer-python-regex",
   "description": "A Lezer grammar for parsing Python regular expressions",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "files": [
     "dist",
