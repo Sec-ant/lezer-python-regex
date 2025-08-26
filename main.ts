@@ -9,7 +9,7 @@ const pythonRegexLanguage = LRLanguage.define({
 });
 
 new EditorView({
-  doc: "(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$",
+  doc: "(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$",
   parent: document.body,
   extensions: [basicSetup, pythonRegexLanguage],
 });
