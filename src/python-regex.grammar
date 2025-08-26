@@ -20,7 +20,7 @@ SimpleAtom {
   EndAssertion |
   CharacterClass |
   EscapeSequence |
-  PatternCharacter
+  LiteralText
 }
 
 GroupConstruct {
@@ -235,7 +235,7 @@ NamedBackreference {
   }
   
   // Pattern characters - everything else
-  PatternCharacter { ![\\^$.*+?{}()|[\]#] }
+  LiteralText { ![\\^$.*+?{}()|[\]#]+ }
 }
 
 @precedence {
@@ -252,6 +252,7 @@ NamedBackreference {
   NonBoundaryAssertion,
   GroupName,
   DecimalDigits,
+  LiteralText,
   IdentityEscape
 }
 
