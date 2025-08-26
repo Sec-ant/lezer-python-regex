@@ -1,5 +1,11 @@
 # lezer-python-regex
 
+## 0.1.3
+
+### Patch Changes
+
+- 8352381: Fix python regex grammar to replace PatternCharacter with LiteralText
+
 ## 0.1.2
 
 ### Patch Changes
